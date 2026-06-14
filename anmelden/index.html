@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Finde dein Spiel & sichere dir deinen Bonus</title>
+<link rel="icon" href="data:,">
+<meta name="description" content="Beantworte 2 kurze Fragen, finde dein passendes Spiel und sichere dir deinen Willkommensbonus." />
+<link rel="preload" as="image" href="assets/freecash-logo.webp" />
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];
+  ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],
+  ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};
+  for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);
+  ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e};
+  ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;
+  ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};
+  var i=d.createElement("script");i.type="text/javascript";i.async=!0;i.src=r+"?sdkid="+e+"&lib="+t;
+  var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(i,a)};
+  ttq.load('D8883U3C77UARHHC874G');
+  ttq.page();
+}(window, document, 'ttq');
+</script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root{
+    --bg:#0c0c0c;
+    --card:#161616;
+    --fg:#f0f0f0;
+    --muted:#888;
+    --primary:#00c84f;
+    --primary-fg:#04150b;
+    --accent-dim:#3a5a44;
+    --border:#252525;
+    --star:#f5c518;
+    --muted-bg:#1a1a1a;
+  }
+
+  body{
+    background:var(--bg);
+    font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    color:var(--fg);min-height:100vh;display:flex;justify-content:center;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .app{width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;
+    background:linear-gradient(180deg,#0c0c0c 0%,#101010 50%,#0c0c0c 100%);position:relative}
+
+  .step{display:none;flex:1;flex-direction:column;padding:24px 20px 28px;animation:slideIn .35s cubic-bezier(.34,1.4,.64,1)}
+  .step.active{display:flex}
+  @keyframes slideIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes ctaPulse{0%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 22px rgba(0,200,79,.4)}50%{box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 40px rgba(0,200,79,.7),0 0 0 5px rgba(0,200,79,.07)}}
+
+  /* ── TOP BAR + PROGRESS ── */
+  .topbar{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+  .topbar img{width:30px;height:30px;border-radius:8px;object-fit:cover}
+  .topbar-name{font-size:16px;font-weight:800;letter-spacing:-.3px}
+  .topbar-stat{margin-left:auto;display:flex;align-items:center;gap:5px;border:1px solid var(--border);background:rgba(22,22,22,.7);border-radius:99px;padding:5px 11px}
+  .topbar-stat svg{width:12px;height:12px;stroke:var(--accent-dim);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+  .topbar-stat span{font-size:10px;color:var(--muted);font-weight:600}
+
+  .progress-track{height:5px;background:var(--muted-bg);border-radius:99px;overflow:hidden;margin-bottom:26px}
+  .progress-fill{height:100%;width:33%;background:linear-gradient(90deg,#00a942,#00e85a);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+
+  .q-kicker{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--accent-dim);margin-bottom:10px}
+  .q-title{font-size:25px;font-weight:900;line-height:1.18;letter-spacing:-.4px;margin-bottom:8px}
+  .q-title .gr{color:var(--primary)}
+  .q-sub{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:24px}
+
+  /* ── CHOICE CARDS ── */
+  .choices{display:flex;flex-direction:column;gap:11px}
+  .choice{display:flex;align-items:center;gap:14px;border:1px solid var(--border);background:rgba(22,22,22,.5);
+    border-radius:16px;padding:15px;cursor:pointer;text-align:left;width:100%;font-family:inherit;
+    transition:border-color .15s,transform .1s,background .15s;-webkit-tap-highlight-color:transparent}
+  .choice:hover{border-color:var(--accent-dim)}
+  .choice:active{transform:scale(.98)}
+  .choice-ic{width:46px;height:46px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#10231a}
+  .choice-ic svg{width:26px;height:26px}
+  .choice-tx{flex:1;min-width:0;display:flex;flex-direction:column}
+  .choice-tt{font-size:15px;font-weight:700;color:var(--fg)}
+  .choice-ds{font-size:12px;color:var(--muted);margin-top:2px}
+  .choice-ar{width:18px;height:18px;flex-shrink:0;stroke:var(--muted);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+  /* ── AGE GATE ── */
+  .gate-center{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+  .gate-logo{width:64px;height:64px;border-radius:16px;object-fit:cover;margin-bottom:20px;box-shadow:0 0 30px rgba(0,200,79,.18)}
+  .gate-h{font-size:30px;font-weight:900;line-height:1.1;margin-bottom:10px}
+  .gate-h .gr{color:var(--primary)}
+  .gate-p{font-size:13px;color:var(--muted);margin-bottom:26px;line-height:1.5}
+  .btn-yes{width:100%;background:linear-gradient(180deg,#1ae068,#00c84f 55%,#00a942);color:var(--primary-fg);
+    border:none;border-radius:14px;padding:16px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;
+    margin-bottom:10px;box-shadow:inset 0 1px 0 rgba(255,255,255,.4);transition:transform .1s;-webkit-tap-highlight-color:transparent}
+  .btn-yes:active{transform:scale(.98)}
+  .btn-no{width:100%;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:14px;
+    padding:14px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent}
+
+  /* ── BLOCKED ── */
+  .blk-center{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+  .blk-ic{width:60px;height:60px;border:1px solid var(--border);background:var(--card);border-radius:15px;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+  .blk-ic svg{width:28px;height:28px;stroke:var(--primary);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .blk-h{font-size:22px;font-weight:900;margin-bottom:10px}
+  .blk-p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:26px}
+  .btn-back{display:inline-flex;align-items:center;gap:7px;background:none;color:var(--fg);border:1px solid var(--border);
+    border-radius:12px;padding:13px 26px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .btn-back svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+  /* ── RESULT STEP ── */
+  .result-top{text-align:center;position:relative;margin-bottom:20px}
+  .result-top::before{content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:280px;height:170px;background:radial-gradient(ellipse at center,rgba(0,200,79,.16),transparent 65%);pointer-events:none;z-index:0}
+  .result-badge{position:relative;z-index:1;display:inline-flex;align-items:center;gap:6px;background:rgba(0,200,79,.1);border:1px solid rgba(0,200,79,.3);border-radius:99px;padding:7px 15px;margin-bottom:16px}
+  .result-badge svg{width:14px;height:14px;stroke:var(--primary);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+  .result-badge span{font-size:12px;font-weight:700;color:var(--primary)}
+  .result-h{position:relative;z-index:1;font-size:24px;font-weight:900;line-height:1.18;letter-spacing:-.4px;margin-bottom:8px}
+  .result-h .gr{color:var(--primary)}
+  .result-p{position:relative;z-index:1;font-size:13px;color:var(--muted);line-height:1.55;padding:0 6px}
+
+  .match-card{display:flex;align-items:center;gap:14px;border:1px solid rgba(0,200,79,.3);background:rgba(22,22,22,.72);border-radius:16px;padding:15px;margin-bottom:14px}
+  .match-ic{width:50px;height:50px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#10231a}
+  .match-ic svg{width:28px;height:28px}
+  .match-tx{flex:1;display:flex;flex-direction:column}
+  .match-tt{font-size:15px;font-weight:800}
+  .match-ds{font-size:12px;color:var(--muted);margin-top:2px}
+  .match-tag{background:var(--primary);color:var(--primary-fg);border-radius:99px;padding:3px 10px;font-size:10px;font-weight:800;text-transform:uppercase;flex-shrink:0}
+
+  .steps-mini{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+  .smini{display:flex;align-items:center;gap:12px}
+  .smini-n{width:26px;height:26px;border-radius:50%;background:var(--muted-bg);color:var(--accent-dim);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .smini-t{font-size:13px;color:#c8d0d8}
+  .smini-t strong{color:#fff;font-weight:700}
+
+  .tip{display:flex;align-items:flex-start;gap:8px;background:rgba(245,197,24,.07);border:1px solid rgba(245,197,24,.28);border-radius:12px;padding:11px 13px;margin-bottom:18px}
+  .tip svg{width:15px;height:15px;fill:var(--star);flex-shrink:0;margin-top:1px}
+  .tip span{font-size:12px;color:#d8c89a;line-height:1.45}
+  .tip strong{color:var(--star);font-weight:800}
+
+  .trust-row{display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:14px}
+  .trust-row .stars{display:flex;gap:2px}
+  .trust-row .stars svg{width:14px;height:14px;fill:var(--star)}
+  .trust-row .ttext{font-size:12px;color:var(--fg);font-weight:600}
+  .trust-row .ttext span{color:var(--muted);font-weight:500}
+
+  .cta-btn{width:100%;border:none;border-radius:16px;background:linear-gradient(180deg,#1ae068,#00c84f 55%,#00a942);
+    color:var(--primary-fg);font-family:inherit;font-size:16px;font-weight:800;padding:17px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:8px;animation:ctaPulse 2.5s ease-in-out infinite;
+    text-decoration:none;letter-spacing:-.2px;-webkit-tap-highlight-color:transparent;transition:transform .1s}
+  .cta-btn:active{transform:scale(.97)}
+  .cta-btn svg{width:19px;height:19px;stroke:var(--primary-fg);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+  .cta-sub{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;color:var(--muted);margin-top:9px}
+  .cta-sub svg{width:13px;height:13px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .age-mini{text-align:center;font-size:11px;color:var(--muted);margin-top:12px;line-height:1.4}
+  .age-mini strong{color:var(--primary);font-weight:700}
+
+  /* ── BREAKOUT MODAL ── */
+  .bo-overlay{position:fixed;inset:0;background:rgba(12,12,12,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:999999;display:none;align-items:center;justify-content:center;padding:24px}
+  .bo-overlay.active{display:flex}
+  .bo-card{width:100%;max-width:430px;background:radial-gradient(500px 350px at 50% -40px,rgba(0,200,79,.12),transparent 60%),var(--card);border:1px solid rgba(0,200,79,.25);border-radius:22px;padding:42px 26px 30px;text-align:center;box-shadow:0 0 60px rgba(0,200,79,.22),0 20px 60px rgba(0,0,0,.5);animation:slideIn .4s cubic-bezier(.34,1.56,.64,1)}
+  .bo-h{font-size:26px;font-weight:900;line-height:1.15;margin-bottom:6px;color:#fff}
+  .bo-h .acc{display:block;background:linear-gradient(90deg,#00c84f,#00e85a,#f5c518);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .bo-arrows{display:flex;flex-direction:column;align-items:center;margin:20px 0 22px;animation:boBounce 1.6s ease-in-out infinite}
+  .bo-arrows svg{width:30px;height:17px;margin-top:-7px}
+  .bo-arrows svg:first-child{margin-top:0;opacity:.4}.bo-arrows svg:nth-child(2){opacity:.7}
+  @keyframes boBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+  .bo-btn{display:block;width:100%;padding:18px;background:linear-gradient(180deg,#1ae068,#00c84f 55%,#00a942);color:var(--primary-fg);font-weight:800;font-size:15px;letter-spacing:.8px;text-transform:uppercase;border:none;border-radius:14px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 8px 24px rgba(0,200,79,.35)}
+  .bo-hint{margin-top:14px;font-size:11px;color:var(--muted);line-height:1.5}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- STEP 0: AGE GATE -->
+  <div class="step gate active" id="s-gate">
+    <div class="gate-center">
+      <img src="assets/freecash-logo.webp" alt="FreeCash" class="gate-logo" />
+      <h1 class="gate-h">Bist du <span class="gr">21+</span>?</h1>
+      <p class="gate-p">Bestätige dein Alter, um deinen Spiele-Match zu starten.</p>
+      <button class="btn-yes" id="g-yes">Ja, ich bin 21+</button>
+      <button class="btn-no" id="g-no">Nein, ich bin unter 21</button>
+    </div>
+  </div>
+
+  <!-- STEP 1: QUESTION 1 (genre) -->
+  <div class="step" id="s-q1">
+    <div class="topbar">
+      <img src="assets/freecash-logo.webp" alt="FreeCash" />
+      <span class="topbar-name">FreeCash</span>
+      <span class="topbar-stat">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
+        <span>50 Mio. $ ausgezahlt</span>
+      </span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:33%"></div></div>
+    <div class="q-kicker">Frage 1 von 2</div>
+    <h2 class="q-title">Welche <span class="gr">Spiele</span> magst du am liebsten?</h2>
+    <p class="q-sub">So finden wir das passende Spiel für deinen Start — dauert nur 10 Sekunden.</p>
+    <div class="choices">
+      <button class="choice" data-genre="puzzle">
+        <span class="choice-ic"><svg viewBox="0 0 48 48"><defs><linearGradient id="p1" x1="0" y1="0" x2="48" y2="48"><stop offset="0" stop-color="#00e85a"/><stop offset="1" stop-color="#00a942"/></linearGradient></defs><rect x="9" y="9" width="12" height="12" rx="3" fill="url(#p1)"/><rect x="27" y="9" width="12" height="12" rx="3" fill="#1f6b3a"/><rect x="9" y="27" width="12" height="12" rx="3" fill="#1f6b3a"/><rect x="27" y="27" width="12" height="12" rx="3" fill="url(#p1)"/></svg></span>
+        <span class="choice-tx"><span class="choice-tt">Puzzle & Knobeln</span><span class="choice-ds">Entspannt Level für Level lösen</span></span>
+        <svg class="choice-ar" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6" /></svg>
+      </button>
+      <button class="choice" data-genre="action">
+        <span class="choice-ic"><svg viewBox="0 0 48 48"><defs><linearGradient id="p2" x1="0" y1="0" x2="48" y2="48"><stop offset="0" stop-color="#00e85a"/><stop offset="1" stop-color="#00a942"/></linearGradient></defs><path d="M16 12 L34 24 L16 36 Z" fill="url(#p2)"/></svg></span>
+        <span class="choice-tx"><span class="choice-tt">Action & Tempo</span><span class="choice-ds">Schnelle Runden mit Nervenkitzel</span></span>
+        <svg class="choice-ar" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6" /></svg>
+      </button>
+      <button class="choice" data-genre="strategy">
+        <span class="choice-ic"><svg viewBox="0 0 48 48"><defs><linearGradient id="p3" x1="0" y1="0" x2="48" y2="48"><stop offset="0" stop-color="#00e85a"/><stop offset="1" stop-color="#00a942"/></linearGradient></defs><circle cx="24" cy="16" r="7" fill="url(#p3)"/><rect x="13" y="26" width="22" height="6" rx="3" fill="#1f6b3a"/><rect x="16" y="35" width="16" height="5" rx="2.5" fill="url(#p3)"/></svg></span>
+        <span class="choice-tx"><span class="choice-tt">Strategie & Aufbau</span><span class="choice-ds">Planen, bauen, gewinnen</span></span>
+        <svg class="choice-ar" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6" /></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 2: QUESTION 2 (session length) -->
+  <div class="step" id="s-q2">
+    <div class="topbar">
+      <img src="assets/freecash-logo.webp" alt="FreeCash" />
+      <span class="topbar-name">FreeCash</span>
+      <span class="topbar-stat">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
+        <span>50 Mio. $ ausgezahlt</span>
+      </span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:66%"></div></div>
+    <div class="q-kicker">Frage 2 von 2</div>
+    <h2 class="q-title">Wie viel <span class="gr">Zeit</span> hast du zum Spielen?</h2>
+    <p class="q-sub">Wir zeigen dir Spiele, die zu deinem Tempo passen.</p>
+    <div class="choices">
+      <button class="choice" data-time="short">
+        <span class="choice-ic"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" fill="none" stroke="#00e85a" stroke-width="4"/><polyline points="24 15 24 24 31 28" fill="none" stroke="#00e85a" stroke-width="4" stroke-linecap="round"/></svg></span>
+        <span class="choice-tx"><span class="choice-tt">Ein paar Minuten</span><span class="choice-ds">Kurze Runden zwischendurch</span></span>
+        <svg class="choice-ar" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6" /></svg>
+      </button>
+      <button class="choice" data-time="medium">
+        <span class="choice-ic"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" fill="none" stroke="#00e85a" stroke-width="4"/><polyline points="24 15 24 24 33 24" fill="none" stroke="#00e85a" stroke-width="4" stroke-linecap="round"/></svg></span>
+        <span class="choice-tx"><span class="choice-tt">Eine halbe Stunde</span><span class="choice-ds">Entspannt am Abend</span></span>
+        <svg class="choice-ar" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6" /></svg>
+      </button>
+      <button class="choice" data-time="long">
+        <span class="choice-ic"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" fill="none" stroke="#00e85a" stroke-width="4"/><polyline points="24 15 24 24 18 30" fill="none" stroke="#00e85a" stroke-width="4" stroke-linecap="round"/></svg></span>
+        <span class="choice-tx"><span class="choice-tt">So lange ich will</span><span class="choice-ds">Richtig eintauchen</span></span>
+        <svg class="choice-ar" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6" /></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 3: RESULT + CTA -->
+  <div class="step" id="s-result">
+    <div class="topbar">
+      <img src="assets/freecash-logo.webp" alt="FreeCash" />
+      <span class="topbar-name">FreeCash</span>
+      <span class="topbar-stat">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
+        <span>50 Mio. $ ausgezahlt</span>
+      </span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+
+    <div class="result-top">
+      <div class="result-badge">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
+        <span>Dein Spiele-Match steht fest</span>
+      </div>
+      <h2 class="result-h">Perfekt! <span class="gr" id="genre-label">Diese Spiele</span> passen zu dir</h2>
+      <p class="result-p">Melde dich kostenlos an, starte dein erstes Spiel und dein Willkommensbonus wartet nach dem ersten Spiel auf dich.</p>
+    </div>
+
+    <div class="match-card">
+      <span class="match-ic" id="match-icon"></span>
+      <span class="match-tx"><span class="match-tt" id="match-title">Dein Spiel</span><span class="match-ds" id="match-desc">Bereit zum Loslegen</span></span>
+      <span class="match-tag">Match</span>
+    </div>
+
+    <div class="steps-mini">
+      <div class="smini"><span class="smini-n">1</span><span class="smini-t"><strong>Kostenlos anmelden</strong> — in 10 Sek. mit Google</span></div>
+      <div class="smini"><span class="smini-n">2</span><span class="smini-t"><strong>Spiel installieren</strong> & erste Runde starten</span></div>
+      <div class="smini"><span class="smini-n">3</span><span class="smini-t"><strong>Bonus sichern</strong> — nach deinem ersten Spiel</span></div>
+    </div>
+
+    <div class="tip">
+      <svg viewBox="0 0 24 24"><path d="M9 21h6v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17h8v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
+      <span>Wichtig: Wenn FreeCash fragt <strong>„Schon gespielt?"</strong>, tippe immer auf <strong>NEIN</strong> — sonst zählt dein Spiel nicht.</span>
+    </div>
+
+    <div class="trust-row">
+      <div class="stars">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <span class="ttext"><strong>4,7/5</strong> auf Trustpilot <span>· 270.000+ Bewertungen</span></span>
+    </div>
+
+    <a href="https://taprkr.com/r/eyJ0IjoiZnJlZWNhc2gtY3BpIiwidGlkIjoiOTgyNmE5NDk5MGIyNjQ3NmJlZDIiLCJ0cyI6MTc3ODU5NTM1ODEzNSwiZiI6Mn0?s1=getmoney&feb=1"
+       class="cta-btn" id="cta-link" target="_blank" rel="noopener noreferrer"
+       onclick="ttq.track('AddToCart');ttq.track('CompleteRegistration');ttq.track('PlaceAnOrder');">
+      Spiel starten & Bonus sichern
+      <svg viewBox="0 0 24 24"><polyline points="5 12 19 12" /><polyline points="12 5 19 12 12 19" /></svg>
+    </a>
+    <div class="cta-sub">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Anmeldung in 10 Sek. mit Google · Keine Kreditkarte
+    </div>
+    <div class="age-mini">Gib bei der Anmeldung ein Alter von <strong>21+</strong> an, um alle Spiele freizuschalten.</div>
+  </div>
+
+  <!-- BLOCKED -->
+  <div class="step" id="s-blocked">
+    <div class="blk-center">
+      <div class="blk-ic"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg></div>
+      <h1 class="blk-h">Mindestalter: 21+</h1>
+      <p class="blk-p">Dieses Angebot ist nur für Nutzer ab 21 Jahren verfügbar. Gehe zurück und bestätige, dass du 21+ bist.</p>
+      <button class="btn-back" id="b-back"><svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>Zurück</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- BREAKOUT MODAL -->
+<div class="bo-overlay" id="boModal" role="dialog" aria-modal="true">
+  <div class="bo-card">
+    <h2 class="bo-h">Letzter Schritt:<span class="acc">Im Browser öffnen</span></h2>
+    <div class="bo-arrows" aria-hidden="true">
+      <svg viewBox="0 0 32 18" fill="none"><path d="M2 2 L16 14 L30 2" stroke="url(#bg1)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="bg1" x1="0" y1="0" x2="32" y2="0"><stop offset="0" stop-color="#00c84f"/><stop offset=".5" stop-color="#00e85a"/><stop offset="1" stop-color="#f5c518"/></linearGradient></defs></svg>
+      <svg viewBox="0 0 32 18" fill="none"><path d="M2 2 L16 14 L30 2" stroke="url(#bg1)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 32 18" fill="none"><path d="M2 2 L16 14 L30 2" stroke="url(#bg1)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <button type="button" class="bo-btn" id="boBtn">JETZT LOSLEGEN</button>
+    <p class="bo-hint">Für die beste Erfahrung wird die Seite in deinem Standardbrowser geöffnet.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var steps={gate:document.getElementById('s-gate'),q1:document.getElementById('s-q1'),q2:document.getElementById('s-q2'),result:document.getElementById('s-result'),blocked:document.getElementById('s-blocked')};
+  function show(k){for(var s in steps)steps[s].classList.remove('active');steps[k].classList.add('active');window.scrollTo(0,0);}
+
+  var answers={genre:null,time:null};
+
+  document.getElementById('g-yes').addEventListener('click',function(){ttq.track('ClickButton');show('q1');});
+  document.getElementById('g-no').addEventListener('click',function(){ttq.track('ClickButton');show('blocked');});
+  document.getElementById('b-back').addEventListener('click',function(){show('gate');});
+
+  // Q1 genre
+  document.querySelectorAll('#s-q1 .choice').forEach(function(c){
+    c.addEventListener('click',function(){
+      answers.genre=c.getAttribute('data-genre');
+      ttq.track('ClickButton');
+      show('q2');
+    });
+  });
+
+  // Q2 time -> build result
+  var genreMap={
+    puzzle:{label:'Puzzle-Spiele',title:'Puzzle-Spiele',desc:'Entspannt Level für Level lösen',
+      icon:'<svg viewBox="0 0 48 48"><defs><linearGradient id="m1" x1="0" y1="0" x2="48" y2="48"><stop offset="0" stop-color="#00e85a"/><stop offset="1" stop-color="#00a942"/></linearGradient></defs><rect x="9" y="9" width="12" height="12" rx="3" fill="url(#m1)"/><rect x="27" y="9" width="12" height="12" rx="3" fill="#1f6b3a"/><rect x="9" y="27" width="12" height="12" rx="3" fill="#1f6b3a"/><rect x="27" y="27" width="12" height="12" rx="3" fill="url(#m1)"/></svg>'},
+    action:{label:'Action-Spiele',title:'Action-Spiele',desc:'Schnelle Runden mit Nervenkitzel',
+      icon:'<svg viewBox="0 0 48 48"><defs><linearGradient id="m2" x1="0" y1="0" x2="48" y2="48"><stop offset="0" stop-color="#00e85a"/><stop offset="1" stop-color="#00a942"/></linearGradient></defs><path d="M16 12 L34 24 L16 36 Z" fill="url(#m2)"/></svg>'},
+    strategy:{label:'Strategie-Spiele',title:'Strategie-Spiele',desc:'Planen, bauen, gewinnen',
+      icon:'<svg viewBox="0 0 48 48"><defs><linearGradient id="m3" x1="0" y1="0" x2="48" y2="48"><stop offset="0" stop-color="#00e85a"/><stop offset="1" stop-color="#00a942"/></linearGradient></defs><circle cx="24" cy="16" r="7" fill="url(#m3)"/><rect x="13" y="26" width="22" height="6" rx="3" fill="#1f6b3a"/><rect x="16" y="35" width="16" height="5" rx="2.5" fill="url(#m3)"/></svg>'}
+  };
+
+  document.querySelectorAll('#s-q2 .choice').forEach(function(c){
+    c.addEventListener('click',function(){
+      answers.time=c.getAttribute('data-time');
+      ttq.track('ClickButton');
+      var g=genreMap[answers.genre]||genreMap.puzzle;
+      document.getElementById('genre-label').textContent=g.label;
+      document.getElementById('match-title').textContent=g.title;
+      document.getElementById('match-desc').textContent=g.desc;
+      document.getElementById('match-icon').innerHTML=g.icon;
+      ttq.track('ViewContent');
+      show('result');
+    });
+  });
+
+  // Query string passthrough
+  var qs=window.location.search;
+  if(qs){var cta=document.getElementById('cta-link');if(cta){var h=cta.getAttribute('href');cta.setAttribute('href',h.includes('?')?h+qs.replace('?','&'):h+qs);}}
+
+  // ── Breakout ──
+  function isInApp(){var ua=(navigator.userAgent||'').toLowerCase();var p=['tiktok','bytedance','musical_ly','aweme','instagram','fbav','fb_iab','fban','fbios','fbss','snapchat','linkedinapp','twitter','pinterest','line/','micromessenger','kakaotalk'];for(var i=0;i<p.length;i++){if(ua.indexOf(p[i])!==-1)return true}return false;}
+  function getOS(){var ua=(navigator.userAgent||'').toLowerCase();if(/iphone|ipad|ipod/.test(ua))return 'ios';if(/android/.test(ua))return 'android';return 'other';}
+  function openBO(){document.getElementById('boModal').classList.add('active');document.body.style.overflow='hidden';}
+  function closeBO(){document.getElementById('boModal').classList.remove('active');document.body.style.overflow='';}
+  function toBrowser(){var url=document.getElementById('cta-link').href;var os=getOS();
+    if(os==='android'){var clean=url.replace(/^https?:\/\//,'');window.location.href='intent://'+clean+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(url)+';end';setTimeout(function(){window.location.href=url},800);}
+    else if(os==='ios'){window.location.href=url.replace(/^https?:\/\//,'x-safari-https://');setTimeout(function(){window.location.href=url},800);}
+    else{window.location.href=url;}}
+
+  var ctaLink=document.getElementById('cta-link');
+  ctaLink.addEventListener('click',function(e){
+    var force=/[?&]inapp=1/.test(window.location.search);
+    if(isInApp()||force){e.preventDefault();ttq.track('AddToCart');ttq.track('CompleteRegistration');ttq.track('PlaceAnOrder');openBO();}
+  });
+  document.getElementById('boBtn').addEventListener('click',function(e){e.preventDefault();toBrowser();});
+  document.getElementById('boModal').addEventListener('click',function(e){if(e.target===this)closeBO();});
+  if(/[?&]test=1/.test(window.location.search)){window.addEventListener('load',openBO);}
+})();
+</script>
+</body>
+</html>
