@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Open in Browser</title>
+    <link rel="icon" href="data:,">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #00c84f;
+            --green-dim: #00a942;
+            --glow: rgba(0, 200, 79, 0.5);
+            --glow-soft: rgba(0, 200, 79, 0.18);
+            --bg: #0c0c0c;
+            --grad: linear-gradient(90deg, #00c84f, #00e85a, #f5c518);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: 'DM Sans', sans-serif; background: var(--bg); color: #fff;
+            min-height: 100vh; min-height: 100dvh; display: flex; align-items: center; justify-content: center;
+            padding: 28px 24px; overflow: hidden; position: relative;
+        }
+        body::after {
+            content: ''; position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 100; opacity: 0.6;
+        }
+        .glow-blob { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
+        .glow-blob-1 {
+            width: 500px; height: 500px; top: 50%; left: 50%; transform: translate(-50%, -60%);
+            background: radial-gradient(circle, rgba(0,200,79,.16) 0%, transparent 70%);
+            animation: blobDrift 6s ease-in-out infinite alternate;
+        }
+        .glow-blob-2 {
+            width: 300px; height: 300px; bottom: -80px; right: -60px;
+            background: radial-gradient(circle, rgba(245,197,24,.08) 0%, transparent 70%);
+        }
+        @keyframes blobDrift { from { transform: translate(-50%, -60%) scale(1); } to { transform: translate(-50%, -55%) scale(1.08); } }
+        .wrap { position: relative; z-index: 1; max-width: 400px; width: 100%; text-align: center; animation: fadeUp .5s ease both; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        .icon-wrap {
+            width: 90px; height: 90px; margin: 0 auto 32px; border-radius: 24px;
+            border: 1px solid rgba(0,200,79,.3);
+            background: linear-gradient(160deg, rgba(0,200,79,.1) 0%, rgba(0,0,0,0) 100%);
+            display: grid; place-items: center;
+            box-shadow: 0 0 50px rgba(0,200,79,.22), inset 0 1px 0 rgba(255,255,255,.05);
+            animation: iconGlow 3s ease-in-out infinite;
+        }
+        @keyframes iconGlow {
+            0%,100% { box-shadow: 0 0 50px rgba(0,200,79,.22), inset 0 1px 0 rgba(255,255,255,.05); }
+            50% { box-shadow: 0 0 80px rgba(0,200,79,.4), inset 0 1px 0 rgba(255,255,255,.05); }
+        }
+        .icon-wrap svg { width: 38px; height: 38px; color: var(--green); stroke-width: 2.2; }
+        h1 { font-family: 'Bebas Neue', sans-serif; font-size: 56px; line-height: 1; letter-spacing: 1px; margin-bottom: 14px; color: #fff; }
+        h1 .hl { color: var(--green); text-shadow: 0 0 30px rgba(0,200,79,.55); }
+        .sub { font-size: 15px; color: #7a8085; line-height: 1.55; margin-bottom: 40px; font-weight: 400; }
+        .cta {
+            display: block; width: 100%; background: var(--green); color: #000;
+            font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 3px;
+            text-transform: uppercase; padding: 19px 24px; border-radius: 999px; border: none; cursor: pointer;
+            box-shadow: 0 0 50px var(--glow), 0 4px 24px rgba(0,0,0,.5);
+            animation: ctaPulse 2.2s ease-in-out infinite; transition: transform .1s ease;
+            margin-bottom: 22px; position: relative; overflow: hidden;
+        }
+        .cta::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,.18) 0%, transparent 60%); pointer-events: none; }
+        .cta:active { transform: scale(.97); }
+        @keyframes ctaPulse {
+            0%,100% { box-shadow: 0 0 50px var(--glow), 0 4px 24px rgba(0,0,0,.5); }
+            50% { box-shadow: 0 0 90px var(--glow), 0 4px 24px rgba(0,0,0,.5); }
+        }
+        .chips { display: flex; align-items: center; justify-content: center; gap: 14px; font-size: 13px; color: #3e4348; font-weight: 500; letter-spacing: .3px; }
+        .chips .dot { width: 3px; height: 3px; background: #2a2f33; border-radius: 50%; }
+        @media (max-height: 640px) {
+            .icon-wrap { width: 72px; height: 72px; margin-bottom: 20px; border-radius: 18px; }
+            .icon-wrap svg { width: 30px; height: 30px; }
+            h1 { font-size: 44px; }
+            .sub { margin-bottom: 28px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-blob glow-blob-1"></div>
+    <div class="glow-blob glow-blob-2"></div>
+
+    <div class="wrap">
+        <div class="icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7"/>
+                <path d="M7 7h10v10"/>
+            </svg>
+        </div>
+        <h1>Open in <span class="hl">Browser</span></h1>
+        <p class="sub">Tap Continue to open this page in your browser for the full experience.</p>
+        <button class="cta" id="ctaBtn">Continue</button>
+        <div class="chips">
+            <span>Safari</span>
+            <span class="dot"></span>
+            <span>Chrome</span>
+            <span class="dot"></span>
+            <span>Secure</span>
+        </div>
+    </div>
+
+    <script>
+    (function () {
+        // ══════════════════════════════════════════════
+        // ▶▶▶  PASTE YOUR DESTINATION LINK HERE  ◀◀◀
+        // ══════════════════════════════════════════════
+        var DEST = 'http://spielefuerdich.com/lander/';
+        // ══════════════════════════════════════════════
+
+        function isInAppBrowser() {
+            var ua = (navigator.userAgent || '').toLowerCase();
+            var p = ['tiktok','bytedance','musical_ly','aweme','instagram','fbav','fb_iab','fban','fbios','fbss',
+                     'snapchat','linkedinapp','twitter','pinterest','line/','micromessenger','kakaotalk'];
+            for (var i = 0; i < p.length; i++) { if (ua.indexOf(p[i]) !== -1) return true; }
+            return false;
+        }
+
+        function getOS() {
+            var ua = (navigator.userAgent || '').toLowerCase();
+            if (/iphone|ipad|ipod/.test(ua)) return 'ios';
+            if (/android/.test(ua)) return 'android';
+            return 'other';
+        }
+
+        function breakout(url) {
+            var os = getOS();
+            if (os === 'android') {
+                var clean = url.replace(/^https?:\/\//, '');
+                var intent = 'intent://' + clean +
+                    '#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=' +
+                    encodeURIComponent(url) + ';end';
+                try { (window.top || window).location.href = intent; }
+                catch (e) { window.location.href = intent; }
+                setTimeout(function () { window.location.href = url; }, 800);
+            } else if (os === 'ios') {
+                var safari = url.replace(/^https:\/\//, 'x-safari-https://');
+                try { (window.top || window).location.href = safari; }
+                catch (e) { window.location.href = safari; }
+                setTimeout(function () { window.location.href = url; }, 800);
+            } else {
+                window.location.href = url;
+            }
+        }
+
+        var dest = DEST;
+
+        // If NOT in an in-app browser, skip the breakout screen and redirect immediately.
+        var force = /[?&]force=1/.test(window.location.search);
+        if (!isInAppBrowser() && !force) {
+            window.location.replace(dest);
+            return;
+        }
+
+        document.getElementById('ctaBtn').addEventListener('click', function (e) {
+            e.preventDefault();
+            breakout(dest);
+        });
+    })();
+    </script>
+</body>
+</html>
